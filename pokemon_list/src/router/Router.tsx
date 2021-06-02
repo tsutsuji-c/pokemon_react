@@ -4,18 +4,19 @@ import { Route, Switch } from 'react-router-dom';
 import { Home } from "../components/pages/Home";
 import { Pokemon } from "../components/pages/Pokemon";
 import { Page404 } from "../components/pages/Page404";
+import { DefaultLayout } from "../components/templates/DefaultLayout";
 
 export const Router: VFC = memo(() => {
     return(
         <Switch>
             <Route exact path="/">
-                <Home />
+                <DefaultLayout><Home /></DefaultLayout>
             </Route>
             <Route path="/pokemon">
-                <Pokemon />
+            <DefaultLayout><Pokemon /></DefaultLayout>
             </Route>
             <Route path="*">
-                <Page404 />
+            <DefaultLayout><Page404 /></DefaultLayout>
             </Route>
         </Switch>
     )
