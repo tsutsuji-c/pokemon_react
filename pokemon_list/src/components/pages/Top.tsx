@@ -1,24 +1,33 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { memo, useEffect, VFC } from "react";
 import {
     Center,
     Spinner,
     Wrap,
     WrapItem,
+    Box,
   } from "@chakra-ui/react";
 
-import { PokemonCard } from '../organisms/layout/pokemon/PokemonCard'
+import { PokemonCard } from '../molecules/pokemon/PokemonCard'
 import { useAllPokemon } from '../../hooks/useAllPokemon'
+import { usePagination } from '../../hooks/usePagination'
+import { Pagination } from '../molecules/Pagination'
+import { usePagequery } from '../../hooks/usePagequery'
 
+export const Top: VFC = memo(() => {
+    
+    const { getPokemon,loading,pokemon, setPokemon} = useAllPokemon();
+    const { maxPokemon, getTotalPage, paginationArray, createPaginationLinks, onClickPage} = usePagination();
+    const { getPageId } = usePagequery();
 
+    const pageId = getPageId(getTotalPage(maxPokemon));
+    useEffect(() => {
+      const resetArray = [];
+      setPokemon(resetArray);
+      getPokemon(pageId,maxPokemon);
+      createPaginationLinks(pageId);
+    }, [pageId]);
 
-
-export const Home: VFC = memo(() => {
-    const { getPokemon,loading,pokemon } = useAllPokemon();
-    // console.log(pokemon)
-    useEffect(() => getPokemon(), [getPokemon]);
-    console.log(pokemon.map(obj => {
-        return obj.sprites
-    }))
     return(
     <>
     {loading ? (
@@ -26,6 +35,8 @@ export const Home: VFC = memo(() => {
         <Spinner color="teal.200" />
     </Center>
     ) : (
+      <Box>
+
         <Wrap p={{ base: 4, md: 10 }}>
             {pokemon.map(obj => (
             <WrapItem key={obj.id} mx="auto">
@@ -36,8 +47,13 @@ export const Home: VFC = memo(() => {
             </WrapItem>
           ))}
         </Wrap>
+        <Pagination 
+        paginationArray={paginationArray}
+        onClickPage = {onClickPage}
+        />
+      </Box>
+        
       )}
-   
     </>
     );
 });
