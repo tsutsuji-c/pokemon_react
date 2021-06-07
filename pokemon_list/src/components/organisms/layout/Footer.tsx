@@ -1,6 +1,6 @@
 import { memo, VFC } from "react";
 
-import { Box, Flex, Heading, Link, useDisclosure } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 export const Footer: VFC = memo(() => {
     return (
         <>
