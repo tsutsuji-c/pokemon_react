@@ -13,7 +13,7 @@ export const usePagination = () => {
   const maxPokemon = 151;
   const getTotalPage = (maxPokemon:number):number=> {
   
-  return (maxPokemon /9 | 0) +1
+  return (maxPokemon /10 | 0) +1
   };
 
   // 最初のページかどうかの判定

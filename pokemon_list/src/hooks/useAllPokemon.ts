@@ -27,11 +27,11 @@ export const useAllPokemon = () => {
 
 
   const setStartIndex = (currentPage:number) => {
-    return ((currentPage-1)*9) +1;
+    return ((currentPage-1)*10) +1;
   };
 
   const setEndIndex = (currentPage:number, maxPokemon:number) => {
-    let end = currentPage *9;
+    let end = currentPage *10;
     // ポケモンの最大値と比較する
     if (end >= maxPokemon) {
       end =maxPokemon;
