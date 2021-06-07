@@ -7,8 +7,8 @@ export const usePagination = () => {
   const history = useHistory();
  
   // // 現在のページ番号を取得
-  const [paginationArray, setPaginationArray] = useState<Array<number>>([]);
-
+  const [paginationObject, setPaginationObject] = useState<{'page': number, 'isCurrentPage': boolean}[]>([]);
+  
   // ポケモン151匹からページ数を求める
   const maxPokemon = 151;
   const getTotalPage = (maxPokemon:number):number=> {
@@ -56,6 +56,14 @@ export const usePagination = () => {
     }
   };
 
+  const makePaginationObject = (paginationArray:Array<number>,currentPage:number) => {
+    const PaginationObjectt  = paginationArray.map((obj)=>{
+      if (currentPage===obj) return { 'page': obj, 'isCurrentPage': true}
+      return { 'page': obj, 'isCurrentPage': false}
+    })
+    return PaginationObjectt
+  };
+
 
   const createPaginationLinks = ( currentPage:number ) => {
     const totalPage = getTotalPage(maxPokemon)
@@ -79,11 +87,13 @@ export const usePagination = () => {
     // if ( -1 === paginationArray.indexOf( totalPages ) ) {
     //   paginationArray.push( totalPages );
     // }
-    setPaginationArray(array);
+    const object = makePaginationObject(array,currentPage)
+    setPaginationObject(object);
+    // console.log(setPaginationObject(array,currentPage))
   };
 
   const onClickPage = useCallback((id:number) => {
     history.push(`/?page=${String(id)}`)
   },[]);
-  return { maxPokemon, getTotalPage, paginationArray,createPaginationLinks, onClickPage };
+  return { maxPokemon, getTotalPage, paginationObject,createPaginationLinks, onClickPage };
 };

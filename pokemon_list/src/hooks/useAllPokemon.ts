@@ -59,7 +59,7 @@ export const useAllPokemon = () => {
         showMessage({ title: "情報取得に失敗しました", status: "error" })
       )
       .finally(() => {
-          if(num>end-1)return setLoading(false)
+          if(num===end)return setLoading(false)
         });
         
       }

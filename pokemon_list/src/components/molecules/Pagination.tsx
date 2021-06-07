@@ -1,26 +1,60 @@
 import { memo, VFC} from "react";
-
-import { Box, Text } from "@chakra-ui/react";
+import { Link } from 'react-router-dom'
+import { Text, Flex, Square} from "@chakra-ui/react";
 
 type Props = {
-  paginationArray: Array<number>;
+  totalPage: number;
+  paginationObject:{'page': number, 'isCurrentPage': boolean}[];
   onClickPage: (id:number) => void;
   };
 export const Pagination: VFC<Props> = memo((props) => {
-    const { paginationArray, onClickPage} = props;
+    const { totalPage, paginationObject, onClickPage} = props;
     return (
         <>
-        <Box className="paginator" as="div"textAlign="center">
-        <Box className="fa fa-angle-double-left" as="button">
-        前のページ
-        </Box>
-        {paginationArray.map((item) => (
-            <Text as="a" key={item} onClick={() => onClickPage(item)} >{String(item)}</Text>
-        ))}
-        <Box className="fa fa-angle-double-right" as="button">
-          次のページ
-        </Box>
-        </Box>
+        <Flex className="paginator"   justify="center" as="div">
+          <Text m="12px"><Link to="/?page=1">最初のページ</Link></Text>
+        {paginationObject.map((obj) => {
+          if (obj.isCurrentPage===true){
+            return(
+            <Square 
+            key={obj.page}
+            bg="red.500"
+            size="32px"
+            as="div" 
+            m="8px" 
+            color="white" 
+            borderRadius="16px"
+            >
+              <Text 
+              m="12px"
+              as="a" 
+              key={obj.page} 
+              onClick={() => onClickPage(obj.page)} 
+              _hover={{ cursor: "pointer" }}
+              >{String(obj.page)}</Text>
+            </Square>
+            )
+          } else {
+            return (
+            <Square 
+            key={obj.page}
+            size="32px"
+            as="div" 
+            m="8px" 
+            >
+              <Text 
+              m="12px"
+              as="a" 
+              key={obj.page} 
+              onClick={() => onClickPage(obj.page)} 
+              _hover={{ cursor: "pointer" }}
+              >{String(obj.page)}</Text>
+            </Square>
+            )
+          };
+        })}
+        <Text m="12px"><Link to={`/?page=${totalPage}`}>最後のページ</Link></Text>
+        </Flex>
     </>
     );
 });

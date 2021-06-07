@@ -10,17 +10,18 @@ import {
 
 import { PokemonCard } from '../molecules/pokemon/PokemonCard'
 import { useAllPokemon } from '../../hooks/useAllPokemon'
-import { usePagination } from '../../hooks/usePagination'
+import { usePagination } from '../../hooks/Pagination/usePagination'
 import { Pagination } from '../molecules/Pagination'
 import { usePagequery } from '../../hooks/usePagequery'
 
 export const Top: VFC = memo(() => {
     
     const { getPokemon,loading,pokemon, setPokemon} = useAllPokemon();
-    const { maxPokemon, getTotalPage, paginationArray, createPaginationLinks, onClickPage} = usePagination();
+    const { maxPokemon, getTotalPage, paginationObject, createPaginationLinks, onClickPage} = usePagination();
     const { getPageId } = usePagequery();
 
-    const pageId = getPageId(getTotalPage(maxPokemon));
+    const totalPage =getTotalPage(maxPokemon);
+    const pageId = getPageId(totalPage);
     useEffect(() => {
       const resetArray = [];
       setPokemon(resetArray);
@@ -48,7 +49,8 @@ export const Top: VFC = memo(() => {
           ))}
         </Wrap>
         <Pagination 
-        paginationArray={paginationArray}
+        totalPage = {totalPage}
+        paginationObject={paginationObject}
         onClickPage = {onClickPage}
         />
       </Box>
