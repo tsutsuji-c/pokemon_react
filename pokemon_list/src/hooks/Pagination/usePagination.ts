@@ -6,27 +6,22 @@ export const usePagination = () => {
 
   const history = useHistory();
  
-  // // 現在のページ番号を取得
   const [paginationObject, setPaginationObject] = useState<{'page': number, 'isCurrentPage': boolean}[]>([]);
   
-  // ポケモン151匹からページ数を求める
   const maxPokemon = 151;
   const getTotalPage = (maxPokemon:number):number=> {
   
   return (maxPokemon /10 | 0) +1
   };
 
-  // 最初のページかどうかの判定
   const isFirstPage = (totalPage:number):boolean => {
     return !totalPage && 1 >= totalPage;
   };
 
-  // 現在のページ以下のページが0を超えているかどうかの判定
   const isMoreThanFirstPage = (index:number):boolean => {
     return 0 < index;
   };
 
-  // 現在のページがtotalPage以下かどうかの判定
   const isLessThanTotalPages = (totalPage:number,num:number):boolean => {
     return totalPage >= num
   };
@@ -72,24 +67,14 @@ export const usePagination = () => {
     if (isFirstPage(totalPage)) {
       return array;
     };
-    /**
-       * Push the two index items before the current page.
-       */
+
     createPrevPaginationArray(currentPage,array);
     // Push the current page index item.
     array.push( currentPage );
     createNextPaginationArray(totalPage,currentPage, array);
-    // Push first index item in the array if it does not already exists.
-    // if ( -1 === paginationArray.indexOf( 1 ) ) {
-    //   paginationArray.unshift( 1 );
-    // }
-    // // Push last index item in the array if it does not already exists.
-    // if ( -1 === paginationArray.indexOf( totalPages ) ) {
-    //   paginationArray.push( totalPages );
-    // }
+ 
     const object = makePaginationObject(array,currentPage)
     setPaginationObject(object);
-    // console.log(setPaginationObject(array,currentPage))
   };
 
   const onClickPage = useCallback((id:number) => {
